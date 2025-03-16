@@ -1,10 +1,13 @@
 import { SofaIcon, TableOfContents } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import AddItemModal from "../modals/AddItemModal";
 
 const StocksPage = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
 
   const fetchProducts = async () => {
     try {
@@ -31,6 +34,16 @@ const StocksPage = () => {
   useEffect(() => {
     fetchProducts();
   }, []);
+
+  // Open Modal
+  const openModal = () => {
+    setShowModal(true);
+  }
+
+  // Close Modal
+  const closeModal = () => {
+    setShowModal(false);
+  }
 
   // Table content based on state
   const tableContent = () => {
@@ -67,7 +80,6 @@ const StocksPage = () => {
     return products.map((product) => (
       <tr key={product.productId}>
         <td className="text-center">{product.productId}</td>
-        <td className="text-center">{product.imageUrl}</td>
         <td className="text-center">{product.productName}</td>
         <td className="text-center">{product.quantityStock}</td>
         <td className="text-center">{product.sellingPrice}</td>
@@ -88,19 +100,22 @@ const StocksPage = () => {
     ));
   };
 
+  
+
   return (
     <div>
       <h1 className="text-3xl font-bold mb-10">Inventory Stocks</h1>
 
+      <div className="flex justify-end">
+          <button onClick={openModal}
+           className="bg-blue-500/80 py-2 px-4 rounded-md mb-5 text-white hover:bg-blue-400 transition-all duration-300 cursor-pointer">ADD ITEM</button>
+      </div>
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
         <table className="min-w-full divide-y divide-gray-200">
           <thead>
             <tr>
               <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Id
-              </th>
-              <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Image
               </th>
               <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Name
@@ -121,6 +136,9 @@ const StocksPage = () => {
           </tbody>
         </table>
       </div>
+
+
+      {showModal && <AddItemModal closeModal={closeModal} />}
     </div>
   );
 };
