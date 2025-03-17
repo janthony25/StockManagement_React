@@ -138,7 +138,7 @@ const StocksPage = () => {
       </div>
 
 
-      {showModal && <AddItemModal closeModal={closeModal} />}
+      {showModal && <AddItemModal closeModal={closeModal} refreshProducts={fetchProducts} />}
     </div>
   );
 };
